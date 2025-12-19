@@ -24,12 +24,21 @@ const CartItem = sequelize.define(
         min: 1,
       },
     },
+    subtotal: {
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: false,
+    },
   },
   {
     tableName: "cart_items",
     timestamps: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    underscored: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["cart_id", "variant_id"],
+      },
+    ],
   }
 );
 
