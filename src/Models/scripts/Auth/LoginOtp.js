@@ -12,13 +12,15 @@ const LoginOtp = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: { model: 'users', key: 'user_id' }
     },
     device_id: {
       type: DataTypes.STRING,
       allowNull: false,
+      comment: "ID unik perangkat yang tersimpan di user_login_devices"
     },
     otp_code: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(10), // Biasanya OTP pendek
       allowNull: false,
     },
     expired_at: {
@@ -33,6 +35,8 @@ const LoginOtp = sequelize.define(
   {
     tableName: "login_otps",
     timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 
