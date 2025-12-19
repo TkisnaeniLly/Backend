@@ -53,26 +53,6 @@ UserLoginDevice.belongsTo(User, {
   foreignKey: "user_id",
 });
 
-// User -> Login OTP (1 : N)
-User.hasMany(LoginOtp, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-LoginOtp.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// Device -> Login OTP (1 : N)
-UserLoginDevice.hasMany(LoginOtp, {
-  foreignKey: "device_id",
-  sourceKey: "device_id",
-  onDelete: "CASCADE",
-});
-LoginOtp.belongsTo(UserLoginDevice, {
-  foreignKey: "device_id",
-  targetKey: "device_id",
-});
-
 // ==================
 // Relasi Catalog
 // ==================
@@ -98,28 +78,34 @@ Product.belongsTo(Brand, {
 // Product -> Media (1 : N)
 Product.hasMany(Media, {
   foreignKey: "product_id",
+  sourceKey: "product_id", // Menunjuk ke PK baru di Product
   onDelete: "CASCADE",
 });
 Media.belongsTo(Product, {
   foreignKey: "product_id",
+  targetKey: "product_id",
 });
 
 // Product -> Variant (1 : N)
 Product.hasMany(Variant, {
   foreignKey: "product_id",
+  sourceKey: "product_id",
   onDelete: "CASCADE",
 });
 Variant.belongsTo(Product, {
   foreignKey: "product_id",
+  targetKey: "product_id",
 });
 
 // Variant -> Inventory (1 : 1)
 Variant.hasOne(Inventory, {
   foreignKey: "variant_id",
+  sourceKey: "variant_id", // Menunjuk ke PK baru di Variant
   onDelete: "CASCADE",
 });
 Inventory.belongsTo(Variant, {
   foreignKey: "variant_id",
+  targetKey: "variant_id",
 });
 
 // ==================
@@ -147,34 +133,26 @@ CartItem.belongsTo(Cart, {
 // Variant -> CartItem (1 : N)
 Variant.hasMany(CartItem, {
   foreignKey: "variant_id",
+  sourceKey: "variant_id",
   onDelete: "RESTRICT",
 });
 CartItem.belongsTo(Variant, {
   foreignKey: "variant_id",
+  targetKey: "variant_id",
 });
 
-// ==================
-// Export
-// ==================
 module.exports = {
-  sequelize,
-
-  // Auth
   User,
   UserProfile,
   EmailVerification,
   UserLoginDevice,
   LoginOtp,
-
-  // Catalog
   Product,
   Category,
   Brand,
   Media,
   Variant,
   Inventory,
-
-  // Cart
   Cart,
   CartItem,
 };
