@@ -6,8 +6,8 @@ const UserLoginDevice = sequelize.define(
   {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
     user_id: {
       type: DataTypes.INTEGER,
@@ -16,31 +16,24 @@ const UserLoginDevice = sequelize.define(
     device_id: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     device_name: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     ip_address: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     user_agent: {
       type: DataTypes.TEXT,
-      allowNull: true,
     },
     browser: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     os: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     device_type: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     is_verified: {
       type: DataTypes.BOOLEAN,
@@ -48,12 +41,12 @@ const UserLoginDevice = sequelize.define(
     },
     last_login_at: {
       type: DataTypes.DATE,
-      allowNull: true,
     },
   },
   {
     tableName: "user_login_devices",
     timestamps: true,
+    underscored: true,
   }
 );
 
