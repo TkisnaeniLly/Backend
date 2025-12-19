@@ -11,7 +11,7 @@ const slugify = (text) =>
 const Product = sequelize.define(
   "Product",
   {
-    id: {
+    product_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
