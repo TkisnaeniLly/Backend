@@ -27,8 +27,8 @@ const User = sequelize.define(
       type: DataTypes.STRING(20),
     },
     role: {
-      type: DataTypes.STRING(30),
-      defaultValue: "user",
+      type: DataTypes.ENUM("customer", "admin"), // Sesuai dokumen Overview poin 1
+      defaultValue: "customer",
     },
     full_name: {
       type: DataTypes.STRING(100),
@@ -39,9 +39,14 @@ const User = sequelize.define(
     birth_date: {
       type: DataTypes.DATEONLY,
     },
-    status_akun: {
+    status: { // Diubah dari status_akun agar sinkron dengan dokumen Overview
       type: DataTypes.ENUM("pending", "active", "suspended", "blocked"),
       defaultValue: "pending",
+    },
+    token_version: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
     },
     registered_at: {
       type: DataTypes.DATE,
@@ -50,19 +55,13 @@ const User = sequelize.define(
     last_login: {
       type: DataTypes.DATE,
     },
-    // 🔥 TAMBAHKAN INI
-    token_version: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-    },
     updated_at: {
       type: DataTypes.DATE,
     },
   },
   {
     tableName: "users",
-    timestamps: false,
+    timestamps: false, // Menggunakan kolom manual sesuai dokumen
   }
 );
 
