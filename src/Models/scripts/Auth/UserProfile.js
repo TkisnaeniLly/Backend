@@ -4,7 +4,7 @@ const sequelize = require("../../../Config/sequelizeConnect");
 const UserProfile = sequelize.define(
   "UserProfile",
   {
-    profile_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -12,6 +12,7 @@ const UserProfile = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique: true,
     },
     address: {
       type: DataTypes.TEXT,
@@ -23,8 +24,7 @@ const UserProfile = sequelize.define(
   {
     tableName: "user_profiles",
     timestamps: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    underscored: true,
   }
 );
 
