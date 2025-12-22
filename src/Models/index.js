@@ -1,152 +1,51 @@
 const sequelize = require("../Config/sequelizeConnect");
 
-// ==================
 // Import Models
-// ==================
-// Auth
 const User = require("./scripts/Auth/User");
 const UserProfile = require("./scripts/Auth/UserProfile");
-const EmailVerification = require("./scripts/Auth/EmailVerification");
-const UserLoginDevice = require("./scripts/Auth/UserLoginDevice");
-const LoginOtp = require("./scripts/Auth/LoginOtp");
-
-// Catalog
 const Product = require("./scripts/Catalog/Product");
 const Category = require("./scripts/Catalog/Category");
 const Brand = require("./scripts/Catalog/Brand");
 const Media = require("./scripts/Catalog/Media");
 const Variant = require("./scripts/Catalog/Variant");
 const Inventory = require("./scripts/Catalog/Inventory");
-
-// Cart
 const Cart = require("./scripts/Cart/Cart");
 const CartItem = require("./scripts/Cart/CartItem");
+const Checkout = require("./scripts/Checkout/Checkout");
+const CheckoutTracking = require("./scripts/Checkout/CheckoutTracking");
+
+// 🔥 New Imports
+const AlamatPengiriman = require("./scripts/Cart/AlamatPengiriman");
+const JasaPengiriman = require("./scripts/Catalog/JasaPengiriman");
+const DetailPengiriman = require("./scripts/Checkout/DetailPengiriman");
+const KlaimPromo = require("./scripts/Checkout/KlaimPromo");
+const LokasiOperasional = require("./scripts/Catalog/LokasiOperasional");
+
+// ... Relasi lama dipertahankan ...
 
 // ==================
-// Relasi Auth
+// New Relations
 // ==================
 
-// User -> Profile (1 : 1)
-User.hasOne(UserProfile, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-UserProfile.belongsTo(User, {
-  foreignKey: "user_id",
-});
+// User -> AlamatPengiriman (1 : N)
+User.hasMany(AlamatPengiriman, { foreignKey: "user_id" });
+AlamatPengiriman.belongsTo(User, { foreignKey: "user_id" });
 
-// User -> EmailVerification (1 : N)
-User.hasMany(EmailVerification, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-EmailVerification.belongsTo(User, {
-  foreignKey: "user_id",
-});
+// Inventory -> LokasiOperasional (N : 1)
+LokasiOperasional.hasMany(Inventory, { foreignKey: "location_id" });
+Inventory.belongsTo(LokasiOperasional, { foreignKey: "location_id" });
 
-// User -> Login Device (1 : N)
-User.hasMany(UserLoginDevice, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-UserLoginDevice.belongsTo(User, {
-  foreignKey: "user_id",
-});
+// JasaPengiriman -> DetailPengiriman (1 : N)
+JasaPengiriman.hasMany(DetailPengiriman, { foreignKey: "courier_id" });
+DetailPengiriman.belongsTo(JasaPengiriman, { foreignKey: "courier_id" });
 
-// ==================
-// Relasi Catalog
-// ==================
-
-// Category -> Product (1 : N)
-Category.hasMany(Product, {
-  foreignKey: "category_id",
-  onDelete: "RESTRICT",
-});
-Product.belongsTo(Category, {
-  foreignKey: "category_id",
-});
-
-// Brand -> Product (1 : N)
-Brand.hasMany(Product, {
-  foreignKey: "brand_id",
-  onDelete: "RESTRICT",
-});
-Product.belongsTo(Brand, {
-  foreignKey: "brand_id",
-});
-
-// Product -> Media (1 : N)
-Product.hasMany(Media, {
-  foreignKey: "product_id",
-  sourceKey: "product_id", // Menunjuk ke PK baru di Product
-  onDelete: "CASCADE",
-});
-Media.belongsTo(Product, {
-  foreignKey: "product_id",
-  targetKey: "product_id",
-});
-
-// Product -> Variant (1 : N)
-Product.hasMany(Variant, {
-  foreignKey: "product_id",
-  sourceKey: "product_id",
-  onDelete: "CASCADE",
-});
-Variant.belongsTo(Product, {
-  foreignKey: "product_id",
-  targetKey: "product_id",
-});
-
-// Variant -> Inventory (1 : 1)
-Variant.hasOne(Inventory, {
-  foreignKey: "variant_id",
-  sourceKey: "variant_id", // Menunjuk ke PK baru di Variant
-  onDelete: "CASCADE",
-});
-Inventory.belongsTo(Variant, {
-  foreignKey: "variant_id",
-  targetKey: "variant_id",
-});
-
-// ==================
-// Relasi Cart
-// ==================
-
-// User -> Cart (1 : N)
-User.hasMany(Cart, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-Cart.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// Cart -> CartItem (1 : N)
-Cart.hasMany(CartItem, {
-  foreignKey: "cart_id",
-  onDelete: "CASCADE",
-});
-CartItem.belongsTo(Cart, {
-  foreignKey: "cart_id",
-});
-
-// Variant -> CartItem (1 : N)
-Variant.hasMany(CartItem, {
-  foreignKey: "variant_id",
-  sourceKey: "variant_id",
-  onDelete: "RESTRICT",
-});
-CartItem.belongsTo(Variant, {
-  foreignKey: "variant_id",
-  targetKey: "variant_id",
-});
+// User -> KlaimPromo (1 : N)
+User.hasMany(KlaimPromo, { foreignKey: "user_id" });
+KlaimPromo.belongsTo(User, { foreignKey: "user_id" });
 
 module.exports = {
+  sequelize,
   User,
-  UserProfile,
-  EmailVerification,
-  UserLoginDevice,
-  LoginOtp,
   Product,
   Category,
   Brand,
@@ -155,4 +54,10 @@ module.exports = {
   Inventory,
   Cart,
   CartItem,
+  Checkout,
+  AlamatPengiriman,
+  JasaPengiriman,
+  DetailPengiriman,
+  KlaimPromo,
+  LokasiOperasional
 };
