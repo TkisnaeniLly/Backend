@@ -1,29 +1,33 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../Config/sequelizeConnect");
 
-const Category = sequelize.define(
-  "Category",
+const PartnerCompany = sequelize.define(
+  "PartnerCompany",
   {
-    category_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    category_name: {
+    name: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    icon_url: {
+    logo_url: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    type: {
+      type: DataTypes.ENUM("LOGISTICS", "PAYMENT", "BRAND", "MARKETING"),
+      allowNull: false,
+    },
   },
   {
-    tableName: "categories",
+    tableName: "partner_companies",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-module.exports = Category;
+module.exports = PartnerCompany;

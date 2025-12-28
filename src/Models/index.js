@@ -1,5 +1,11 @@
-const sequelize = require("../Config/sequelizeConnect");
+// ... (Import sebelumnya tetap ada)
 
+// New Imports
+const Wishlist = require("./scripts/Catalog/Wishlist");
+const Review = require("./scripts/Catalog/Review");
+const PartnerCompany = require("./scripts/Partner/PartnerCompany");
+const PaymentMethod = require("./scripts/Payment/PaymentMethod");
+const ProductHistory = require("./scripts/Catalog/ProductHistory");
 // ==================
 // Import Models
 // ==================
@@ -78,44 +84,28 @@ LoginOtp.belongsTo(UserLoginDevice, {
 });
 
 // ==================
-// Relasi Catalog
+// Tambahan Relasi
 // ==================
 
-// Category -> Product (1 : N)
-Category.hasMany(Product, {
-  foreignKey: "category_id",
-  onDelete: "RESTRICT",
-});
-Product.belongsTo(Category, {
-  foreignKey: "category_id",
-});
+// Wishlist (User <-> Product)
+User.hasMany(Wishlist, { foreignKey: "user_id" });
+Wishlist.belongsTo(User, { foreignKey: "user_id" });
+Product.hasMany(Wishlist, { foreignKey: "product_id" });
+Wishlist.belongsTo(Product, { foreignKey: "product_id" });
 
-// Brand -> Product (1 : N)
-Brand.hasMany(Product, {
-  foreignKey: "brand_id",
-  onDelete: "RESTRICT",
-});
-Product.belongsTo(Brand, {
-  foreignKey: "brand_id",
-});
+// Review (User <-> Product)
+User.hasMany(Review, { foreignKey: "user_id" });
+Review.belongsTo(User, { foreignKey: "user_id" });
+Product.hasMany(Review, { foreignKey: "product_id" });
+Review.belongsTo(Product, { foreignKey: "product_id" });
 
-// Product -> Media (1 : N)
-Product.hasMany(Media, {
-  foreignKey: "product_id",
-  onDelete: "CASCADE",
-});
-Media.belongsTo(Product, {
-  foreignKey: "product_id",
-});
+// Partner & Payment Method
+PartnerCompany.hasMany(PaymentMethod, { foreignKey: "partner_id" });
+PaymentMethod.belongsTo(PartnerCompany, { foreignKey: "partner_id" });
 
-// Product -> Variant (1 : N)
-Product.hasMany(Variant, {
-  foreignKey: "product_id",
-  onDelete: "CASCADE",
-});
-Variant.belongsTo(Product, {
-  foreignKey: "product_id",
-});
+// Product History
+Product.hasMany(ProductHistory, { foreignKey: "product_id" });
+ProductHistory.belongsTo(Product, { foreignKey: "product_id" });
 
 // Variant -> Inventory (1 : 1)
 Variant.hasOne(Inventory, {
@@ -192,22 +182,18 @@ CheckoutTracking.belongsTo(Checkout, {
 // Export
 // ==================
 module.exports = {
-  sequelize,
-
-  // Auth
   User,
   UserProfile,
-  EmailVerification,
-  UserLoginDevice,
-  LoginOtp,
-
-  // Catalog
   Product,
   Category,
   Brand,
-  Media,
-  Variant,
   Inventory,
+  Wishlist,
+  Review,
+  PartnerCompany,
+  PaymentMethod,
+  ProductHistory,
+  // ... export lainnya
 
   // Cart
   Cart,
