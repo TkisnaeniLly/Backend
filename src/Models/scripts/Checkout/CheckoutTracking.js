@@ -1,37 +1,37 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../Config/sequelizeConnect");
 
-const Variant = sequelize.define(
-  "Variant",
+const CheckoutTracking = sequelize.define(
+  "CheckoutTracking",
   {
-    variant_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    product_id: {
+    checkout_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    variant_type: {
-      type: DataTypes.STRING(50),
-      allowNull: false, // Contoh: Warna, Ukuran
-    },
-    variant_value: {
-      type: DataTypes.STRING(50),
-      allowNull: false, // Contoh: Merah, XL
-    },
-    price: {
-      type: DataTypes.DECIMAL(12, 2),
+    status: {
+      type: DataTypes.STRING,
       allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
-    tableName: "variants",
+    tableName: "checkout_trackings",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-module.exports = Variant;
+module.exports = CheckoutTracking;
