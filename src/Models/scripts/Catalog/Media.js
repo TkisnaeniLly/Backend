@@ -4,7 +4,7 @@ const sequelize = require("../../../Config/sequelizeConnect");
 const Media = sequelize.define(
   "Media",
   {
-    id: {
+    media_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -14,7 +14,7 @@ const Media = sequelize.define(
       allowNull: false,
     },
     media_url: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     media_type: {
@@ -30,7 +30,7 @@ const Media = sequelize.define(
     tableName: "media",
     timestamps: true,
     createdAt: "created_at",
-    updatedAt: false,
+    updatedAt: false, // Sesuai dokumentasi overview yang tidak mencantumkan update_at untuk media
   }
 );
 

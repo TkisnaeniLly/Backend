@@ -1,3 +1,5 @@
+const sequelize = require("../Config/sequelizeConnect");
+
 // ... (Import sebelumnya tetap ada)
 
 // New Imports
@@ -8,26 +10,25 @@ const PaymentMethod = require("./scripts/Payment/PaymentMethod");
 const ProductHistory = require("./scripts/Catalog/ProductHistory");
 // ==================
 // Import Models
-// ==================
-// Auth
 const User = require("./scripts/Auth/User");
 const UserProfile = require("./scripts/Auth/UserProfile");
-const EmailVerification = require("./scripts/Auth/EmailVerification");
-const UserLoginDevice = require("./scripts/Auth/UserLoginDevice");
-const LoginOtp = require("./scripts/Auth/LoginOtp");
-
-// Catalog
 const Product = require("./scripts/Catalog/Product");
 const Category = require("./scripts/Catalog/Category");
 const Brand = require("./scripts/Catalog/Brand");
 const Media = require("./scripts/Catalog/Media");
 const Variant = require("./scripts/Catalog/Variant");
 const Inventory = require("./scripts/Catalog/Inventory");
-
-// Cart
 const Cart = require("./scripts/Cart/Cart");
 const CartItem = require("./scripts/Cart/CartItem");
+const Checkout = require("./scripts/Checkout/Checkout");
+const CheckoutTracking = require("./scripts/Checkout/CheckoutTracking");
 
+// 🔥 New Imports
+const AlamatPengiriman = require("./scripts/Cart/AlamatPengiriman");
+const JasaPengiriman = require("./scripts/Catalog/JasaPengiriman");
+const DetailPengiriman = require("./scripts/Checkout/DetailPengiriman");
+const KlaimPromo = require("./scripts/Checkout/KlaimPromo");
+const LokasiOperasional = require("./scripts/Catalog/LokasiOperasional");
 // Checkout
 const Checkout = require("./scripts/Checkout/Checkout");
 const CheckoutTracking = require("./scripts/Checkout/CheckoutTracking");
@@ -36,54 +37,23 @@ const CheckoutTracking = require("./scripts/Checkout/CheckoutTracking");
 // Relasi Auth
 // ==================
 
-// User -> Profile (1 : 1)
-User.hasOne(UserProfile, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-UserProfile.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// User -> EmailVerification (1 : N)
-User.hasMany(EmailVerification, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-EmailVerification.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// User -> Login Device (1 : N)
-User.hasMany(UserLoginDevice, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-UserLoginDevice.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// User -> Login OTP (1 : N)
-User.hasMany(LoginOtp, {
-  foreignKey: "user_id",
-  onDelete: "CASCADE",
-});
-LoginOtp.belongsTo(User, {
-  foreignKey: "user_id",
-});
-
-// Device -> Login OTP (1 : N)
-UserLoginDevice.hasMany(LoginOtp, {
-  foreignKey: "device_id",
-  sourceKey: "device_id",
-  onDelete: "CASCADE",
-});
-LoginOtp.belongsTo(UserLoginDevice, {
-  foreignKey: "device_id",
-  targetKey: "device_id",
-});
+// ... Relasi lama dipertahankan ...
 
 // ==================
+// New Relations
+// ==================
+
+// User -> AlamatPengiriman (1 : N)
+User.hasMany(AlamatPengiriman, { foreignKey: "user_id" });
+AlamatPengiriman.belongsTo(User, { foreignKey: "user_id" });
+
+// Inventory -> LokasiOperasional (N : 1)
+LokasiOperasional.hasMany(Inventory, { foreignKey: "location_id" });
+Inventory.belongsTo(LokasiOperasional, { foreignKey: "location_id" });
+
+// JasaPengiriman -> DetailPengiriman (1 : N)
+JasaPengiriman.hasMany(DetailPengiriman, { foreignKey: "courier_id" });
+DetailPengiriman.belongsTo(JasaPengiriman, { foreignKey: "courier_id" });
 // Tambahan Relasi
 // ==================
 
@@ -107,15 +77,13 @@ PaymentMethod.belongsTo(PartnerCompany, { foreignKey: "partner_id" });
 Product.hasMany(ProductHistory, { foreignKey: "product_id" });
 ProductHistory.belongsTo(Product, { foreignKey: "product_id" });
 
-// Variant -> Inventory (1 : 1)
-Variant.hasOne(Inventory, {
-  foreignKey: "variant_id",
-  onDelete: "CASCADE",
-});
-Inventory.belongsTo(Variant, {
-  foreignKey: "variant_id",
-});
+// User -> KlaimPromo (1 : N)
+User.hasMany(KlaimPromo, { foreignKey: "user_id" });
+KlaimPromo.belongsTo(User, { foreignKey: "user_id" });
 
+module.exports = {
+  sequelize,
+  User,
 // ==================
 // Relasi Cart
 // ==================
@@ -188,6 +156,14 @@ module.exports = {
   Category,
   Brand,
   Inventory,
+  Cart,
+  CartItem,
+  Checkout,
+  AlamatPengiriman,
+  JasaPengiriman,
+  DetailPengiriman,
+  KlaimPromo,
+  LokasiOperasional
   Wishlist,
   Review,
   PartnerCompany,
