@@ -1,29 +1,37 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../Config/sequelizeConnect");
 
-const Category = sequelize.define(
-  "Category",
+const CheckoutTracking = sequelize.define(
+  "CheckoutTracking",
   {
-    category_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    category_name: {
-      type: DataTypes.STRING(100),
+    checkout_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    icon_url: {
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    location: {
       type: DataTypes.STRING,
       allowNull: true,
     },
   },
   {
-    tableName: "categories",
+    tableName: "checkout_trackings",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-module.exports = Category;
+module.exports = CheckoutTracking;

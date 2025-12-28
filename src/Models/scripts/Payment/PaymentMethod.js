@@ -1,29 +1,33 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../Config/sequelizeConnect");
 
-const Category = sequelize.define(
-  "Category",
+const PaymentMethod = sequelize.define(
+  "PaymentMethod",
   {
-    category_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    category_name: {
+    partner_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    method_name: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    icon_url: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   },
   {
-    tableName: "categories",
+    tableName: "payment_methods",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }
 );
 
-module.exports = Category;
+module.exports = PaymentMethod;
