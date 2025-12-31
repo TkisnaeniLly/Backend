@@ -1,6 +1,7 @@
 const response = require("response");
+const checkEmail = require("../Libs/Auth/checkEmail");
 
-const ResetPassword = async(req,res) => {
+const ResetPassword = async (req, res) => {
     try {
         console.log("Reset Password Request Received");
         const { email } = req.body;
@@ -21,6 +22,14 @@ const ResetPassword = async(req,res) => {
         }
 
         // TODO: Verifikasi apakah email terdaftar di database
+        const isEmailValid = checkEmail(email);
+        if (!isEmailValid) {
+            return response(res, {
+                statusCode: 400,
+                message: "Format email tidak ditemukan di database.",
+                data: null,
+            });
+        }
         // TODO: tambahkan logika untuk mengirim email reset password di sini 
 
         return response(res, {
@@ -29,12 +38,12 @@ const ResetPassword = async(req,res) => {
             data: null,
         });
     } catch (error) {
-         console.error("Error Login Request OTP:", error);
-            return response(res, {
-              statusCode: 500,
-              message: "Terjadi kesalahan pada server.",
-              data: process.env.NODE_ENV === "development" ? error.message : null,
-            });
+        console.error("Error Login Request OTP:", error);
+        return response(res, {
+            statusCode: 500,
+            message: "Terjadi kesalahan pada server.",
+            data: process.env.NODE_ENV === "development" ? error.message : null,
+        });
     }
 }
 
