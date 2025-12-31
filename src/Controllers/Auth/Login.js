@@ -60,6 +60,14 @@ const Login = async (req, res) => {
         data: null,
       });
     }
+    if (user.status_akun === "pending") {
+      return response(res, {
+        statusCode: 403,
+        message: "Akun Anda belum diverifikasi. Silakan cek email Anda untuk konfirmasi atau minta kirim ulang email verifikasi.",
+        data: null,
+      });
+    }
+
     if (user.status_akun !== "active") {
       return response(res, {
         statusCode: 403,
