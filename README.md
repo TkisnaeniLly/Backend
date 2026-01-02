@@ -1,158 +1,39 @@
-# Backend
+# Backend Database
 
-## 🚀 Menjalankan Backend
+Ini adalah repositori backend berbasis Express.js yang menyediakan API untuk sistem manajemen database produk dan user.
 
-### 1. Install dependency
+## Struktur Project
 
-```bash
-npm install
-```
+Berikut adalah penjelasan mengenai struktur folder yang ada di dalam direktori `./src`:
 
-### 2. Konfigurasi environment
+- **`src/Assets`**: Menyimpan file statis seperti gambar atau file publik lainnya yang dapat diakses secara langsung.
+- **`src/Config`**: Berisi konfigurasi aplikasi, khususnya koneksi ke database (misalnya menggunakan Sequelize).
+- **`src/Controllers`**: Berisi logika bisnis (business logic) aplikasi. Setiap fungsi di sini menangani request dari route dan mengembalikan response yang sesuai.
+- **`src/Libs`**: Direktori untuk fungsi bantuan (helper functions) dan library tambahan, seperti manajemen autentikasi, fungsi utilitas umum, dan lain-lain.
+- **`src/Middlewares`**: Berisi fungsi middleware Express yang dijalankan sebelum request mencapai controller. Contohnya: validasi autentikasi (`authenticated`), otorisasi role (`authorizeRole`), logging, dan penanganan error.
+- **`src/Models`**: Mendefinisikan struktur data atau skema database (menggunakan Sequelize Model). File-file di sini merepresentasikan tabel-tabel di database.
+- **`src/Routes`**: Menentukan endpoint API dan menghubungkannya dengan controller yang sesuai. Ini adalah pintu masuk untuk setiap request yang datang ke server.
+- **`src/Seeders`**: Berisi skrip untuk mengisi database dengan data awal (dummy data) untuk keperluan development atau testing.
 
-Ganti nama file `.env.sample` menjadi `.env`, lalu sesuaikan nilainya.
+## Cara Menjalankan
 
-```env
-PORT=3000
-NODE_ENV=development
-```
+1.  **Install dependencies:**
 
-### 3. Jalankan server
+    ```bash
+    npm install
+    ```
 
-```bash
-npm run dev
-```
+2.  **Jalankan server (Development):**
 
----
+    ```bash
+    npm run dev
+    ```
 
-## 🖥 Contoh Log Terminal
+3.  **Jalankan server (Production):**
+    ```bash
+    npm start
+    ```
 
-```text
-[nodemon] starting `node App.js`
-Registered aliases from index.js
-🚀 Server running on port 3000
-LOG REQUEST {
-  path: '/',
-  ipClient: '127.0.0.1',
-  hostname: 'localhost',
-  protocol: 'http',
-  method: 'GET',
-  dateTime: '15 Desember 2025 pukul 00.30 WIB'
-}
-```
+## Lisensi
 
----
-
-## 📡 Dokumentasi Routes / Endpoint
-
-Endpoint berikut disediakan oleh backend sebagai **REST API**.
-
----
-
-### 📍 User / Beranda (Protected)
-
-| Method | Endpoint       | Deskripsi                   | Auth |
-| ------ | -------------- | --------------------------- | ---- |
-| GET    | `/api/`        | Endpoint beranda (home API) | JWT  |
-| GET    | `/api/beranda` | Endpoint beranda (home API) | JWT  |
-| GET    | `/api/home`    | Endpoint beranda (home API) | JWT  |
-
-**Header wajib**
-
-```
-Authorization: Bearer <JWT_TOKEN>
-```
-
----
-
-### 🔐 Autentikasi
-
-| Method | Endpoint                 | Deskripsi                           | Auth |
-| ------ | ------------------------ | ----------------------------------- | ---- |
-| POST   | `/api/auth/register`     | Registrasi user baru                | ❌   |
-| GET    | `/api/auth/verify-email` | Verifikasi email user melalui token | ❌   |
-| POST   | `/api/auth/login`        | Login user (mengirim OTP ke email)  | ❌   |
-| PUT    | `/api/auth/verify-login` | Verifikasi OTP login & generate JWT | ❌   |
-| DELETE | `/api/auth/logout`       | Logout user & invalidasi sesi       | JWT  |
-
-Baca selengkapnya di [Dokumentasi Auth](Doc/authentikasi.md).
-
-#### 🔄 Alur Autentikasi
-
-```text
-Register
-   ↓
-Email verifikasi (link + token)
-   ↓
-Email terverifikasi
-   ↓
-Login (email + password)
-   ↓
-OTP dikirim ke email
-   ↓
-Verifikasi OTP
-   ↓
-JWT aktif
-   ↓
-Akses API terproteksi
-   ↓
-Logout
-```
-
----
-
-### 📦 Catalog / Produk
-
-| Method | Endpoint              | Deskripsi                            | Auth |
-| ------ | --------------------- | ------------------------------------ | ---- |
-| GET    | `/api/catalog`        | Ambil semua produk                   | ❌   |
-| GET    | `/api/catalog/:slug`  | Ambil detail produk berdasarkan slug | ❌   |
-| GET    | `/api/products`       | Ambil semua produk                   | ❌   |
-| GET    | `/api/products/:slug` | Ambil detail produk berdasarkan slug | ❌   |
-
-Baca selengkapnya di [Dokumentasi Products/Catalog](Doc/product.md).
-
----
-
-### 🛒 Cart / Keranjang
-
-| Method | Endpoint             | Deskripsi                     | Auth |
-| ------ | -------------------- | ----------------------------- | ---- |
-| GET    | `/api/cart`          | Ambil keranjang milik user    | JWT  |
-| POST   | `/api/cart/add`      | Tambah item ke keranjang      | JWT  |
-| PUT    | `/api/cart/update`   | Update qty & varian item cart | JWT  |
-| DELETE | `/api/cart/delete`   | Kurangi qty / hapus item cart | JWT  |
-| POST   | `/api/cart/checkout` | Checkout keranjang user       | JWT  |
-
-Baca selengkapnya di [Dokumentasi Cart](Doc/cart.md).
-
----
-
-## 🔐 Keamanan API
-
-- Semua request & response menggunakan format **JSON**
-- Endpoint terproteksi **wajib** menyertakan:
-  ```
-  Authorization: Bearer <JWT_TOKEN>
-  ```
-- JWT berlaku selama **1 hari**
-- OTP login berlaku selama **5 menit**
-- Token verifikasi email bersifat **sekali pakai**
-
----
-
-## 🧠 Dokumentasi App.js
-
-`App.js` berfungsi sebagai **entry point** aplikasi backend dengan alur:
-
-1. Inisialisasi Express
-2. Registrasi middleware global
-3. Registrasi routes
-4. Menjalankan server berdasarkan `PORT` dari environment
-
----
-
-## 📌 Baca terlebih dahulu file
-
-[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md), dan [GIT_WORKFLOW.md](GIT_WORKFLOW.md)  
-agar tidak terjadi kesalahan saat mengembangkan aplikasi ini.
+[ISC](LICENSE)
