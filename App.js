@@ -40,9 +40,12 @@ app.use(Log("semua"));
 //   })
 // );
 
+const developmentStatus = process.env.NODE_ENV === "development";
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN.split(","),
+    origin: developmentStatus
+      ? process.env.DEVELOPMENT_ORIGIN
+      : process.env.PRODUCTION_ORIGIN,
     // origin: process.env.ALLOWED_ORIGIN,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
