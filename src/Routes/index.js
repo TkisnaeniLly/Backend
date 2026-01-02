@@ -14,6 +14,10 @@ router.delete("/auth/logout", authenticated, app.logout);
 router.delete("/auth/logout-all", app.logoutAll);
 router.get("/auth/get-user-devices", app.getUserDevices);
 router.delete("/auth/revoke-device", app.revokeDevice);
+router.post("/auth/request-reset-password", app.requestResetPassword);
+router.get("/auth/reset-password", app.resetPassword);
+router.post("/auth/request-reset-otp", app.requestResetOtp);
+router.post("/auth/execute-reset-password", app.executeResetPassword);
 // Public
 router.get("/", app.home);
 router.get("/catalog", app.catalog);

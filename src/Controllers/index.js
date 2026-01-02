@@ -93,6 +93,26 @@ const processCheckout = async (req, res) => {
   return processCheckoutPage(req, res);
 };
 
+const requestResetPasswordPage = require("./Auth/ResetPassword");
+const requestResetPassword = async (req, res) => {
+  return requestResetPasswordPage(req, res);
+};
+
+const getResetPasswordPage = require("./Auth/GetResetPasswordPage");
+const resetPassword = async (req, res) => {
+  return getResetPasswordPage(req, res);
+};
+
+const requestResetOtpPage = require("./Auth/RequestResetOtp");
+const requestResetOtp = async (req, res) => {
+  return requestResetOtpPage(req, res);
+};
+
+const executeResetPasswordPage = require("./Auth/ExecuteResetPassword");
+const executeResetPassword = async (req, res) => {
+  return executeResetPasswordPage(req, res);
+};
+
 const refreshTokenPage = require("./Auth/RefreshToken");
 const refreshToken = async (req, res) => {
   return refreshTokenPage(req, res);
@@ -121,4 +141,8 @@ module.exports = {
   getCheckoutHistory,
   getCheckoutDetail,
   getCheckoutTracking,
+  requestResetPassword,
+  resetPassword,
+  requestResetOtp,
+  executeResetPassword,
 };
