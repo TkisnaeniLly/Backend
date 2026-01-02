@@ -98,9 +98,19 @@ const requestResetPassword = async (req, res) => {
   return requestResetPasswordPage(req, res);
 };
 
-const resetPasswordPage = require("./Auth/ResetPassword");
+const getResetPasswordPage = require("./Auth/GetResetPasswordPage");
 const resetPassword = async (req, res) => {
-  return resetPasswordPage(req, res);
+  return getResetPasswordPage(req, res);
+};
+
+const requestResetOtpPage = require("./Auth/RequestResetOtp");
+const requestResetOtp = async (req, res) => {
+  return requestResetOtpPage(req, res);
+};
+
+const executeResetPasswordPage = require("./Auth/ExecuteResetPassword");
+const executeResetPassword = async (req, res) => {
+  return executeResetPasswordPage(req, res);
 };
 
 const refreshTokenPage = require("./Auth/RefreshToken");
@@ -133,4 +143,6 @@ module.exports = {
   getCheckoutTracking,
   requestResetPassword,
   resetPassword,
+  requestResetOtp,
+  executeResetPassword,
 };
