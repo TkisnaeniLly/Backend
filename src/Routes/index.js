@@ -29,6 +29,7 @@ router.get("/product/:slug", app.getProductBySlug);
 // Users => Home
 router.get("/home", authenticated, authorizeRole(["user"]), app.home);
 router.get("/beranda", authenticated, authorizeRole(["user"]), app.home);
+router.put("/profile", authenticated, authorizeRole(["user"]), app.userProfile);
 // User => Cart
 router.get("/cart", authenticated, authorizeRole(["user"]), app.getMyCart);
 router.post("/cart", authenticated, authorizeRole(["user"]), app.addToCart);
@@ -39,6 +40,7 @@ router.delete(
   authorizeRole(["user"]),
   app.deleteCartItem
 );
+// User => Checkout
 router.post(
   "/checkout",
   authenticated,
@@ -64,3 +66,6 @@ router.get(
   app.getCheckoutTracking
 );
 module.exports = router;
+
+// Admin
+router.post("/opa/checkout/paid-verify", app.paidVerify);

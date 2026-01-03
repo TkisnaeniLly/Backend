@@ -141,7 +141,8 @@ const VerifyLoginOtp = async (req, res) => {
       statusCode: 200,
       message: "Login berhasil.",
       data: {
-        token: accessToken, // Frontend expects "token"
+        token: accessToken,
+        refreshToken: refreshToken,
         user: {
           user_id: user.user_id,
           email: user.email,

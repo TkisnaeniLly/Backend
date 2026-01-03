@@ -2,6 +2,10 @@ const homePage = require("./Home");
 const home = async (req, res) => {
   return homePage(req, res);
 };
+const userProfilePage = require("./Home/userProfile");
+const userProfile = async (req, res) => {
+  return userProfilePage(req, res);
+};
 
 //! Auth
 const registerPage = require("./Auth/Register");
@@ -118,8 +122,17 @@ const refreshToken = async (req, res) => {
   return refreshTokenPage(req, res);
 };
 
+// Admin
+const adminPage = require("./Checkout/Admin");
+const paidVerify = async (req, res) => {
+  return adminPage.paidVerify(req, res);
+};
+
 module.exports = {
+  // User
   home,
+  userProfile,
+  // Auth
   register,
   verifyEmail,
   login,
@@ -129,20 +142,24 @@ module.exports = {
   refreshToken,
   getUserDevices,
   revokeDevice,
-  catalog,
-  getProductBySlug,
-  getFeaturedProducts,
-  addToCart,
-  getMyCart,
-  updateCartItem,
-
-  deleteCartItem,
-  processCheckout,
-  getCheckoutHistory,
-  getCheckoutDetail,
-  getCheckoutTracking,
   requestResetPassword,
   resetPassword,
   requestResetOtp,
   executeResetPassword,
+  // Product
+  catalog,
+  getProductBySlug,
+  getFeaturedProducts,
+  // Cart
+  addToCart,
+  getMyCart,
+  updateCartItem,
+  deleteCartItem,
+  // Checkout
+  processCheckout,
+  getCheckoutHistory,
+  getCheckoutDetail,
+  getCheckoutTracking,
+  // Admin
+  paidVerify,
 };
